@@ -24,7 +24,7 @@ export default function Home({ allPosts }: { allPosts: postType[] }) {
         <div>
             <main className="container w-full mt-16 mx-auto">
                 <h1 className="text-5xl font-medium text-center mb-16">
-                    Notin Blog 🚀
+                    Notion Blog 🚀
                 </h1>
                 {allPosts.map((post, index) => (
                     <SinglePost

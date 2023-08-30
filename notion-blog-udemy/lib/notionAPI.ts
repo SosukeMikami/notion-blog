@@ -76,3 +76,13 @@ export const getPostsTopPage = async () => {
     const fourPosts = allPosts.splice(0,4)
     return fourPosts;
 };
+
+//ページ番号に応じた記事を出力する
+export const getPostsByPage = async (page: number) => {
+    const allPosts = await getAllPosts();
+    const startIndex = page * 4 - 1
+    console.log(startIndex);
+    
+    const fourPosts = allPosts.splice(startIndex,4);
+    return fourPosts;
+}

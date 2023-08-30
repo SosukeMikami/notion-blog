@@ -1,39 +1,44 @@
 import { Inter } from "next/font/google";
-import { getPostsTopPage } from "@/lib/notionAPI";
+import { getPostsByPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 
 export const getStaticPaths = async () => {
     return {
-        paths: [{ params: { page: "1" } }, { params: { page: "2" } }],
+        paths: [{ params: { page: "1" } }, { params: { page: "2" } }, { params: { page: "3" } }],
         fallback: true,
     };
 };
 
-export const getStaticProps = async () => {
-    const allPosts = await getPostsTopPage();
+export const getStaticProps = async (context) => {
+    const currentPage = context.params?.page;
+    const postsByPage = await getPostsByPage(
+        parseInt(currentPage.toString(), 10)
+    )
+
+    console.log(postsByPage);
+    
+
     return {
         props: {
-            allPosts,
+            postsByPage,
         },
         revalidate: 60,
     };
 };
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const BlogPageList = ({ allPosts }: { allPosts: postType[] }) => {
-    console.log(allPosts);
+export const BlogPageList = ({ postsByPage }: { postsByPage: postType[] }) => {
+    console.log(postsByPage);
 
     return (
         <div>
             <main className="container w-full mt-16 mx-auto">
                 <h1 className="text-5xl font-medium text-center mb-16">
-                    Notin Blog 🚀
+                    Notion Blog 🚀
                 </h1>
                 <div className="flex flex-wrap justify-between">
-                    {allPosts.map((post, index) => (
+                    {postsByPage.map((post, index) => (
                         <SinglePost
                             id={post.id}
                             key={index}
