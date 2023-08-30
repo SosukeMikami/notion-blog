@@ -3,6 +3,6 @@ export type postType = {
     title: string,
     description: string,
     date: string,
-    sulg: string,
+    slug: string,
     tags: string[],
 }
