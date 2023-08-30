@@ -1,11 +1,11 @@
 import { Inter } from "next/font/google";
-import { getAllPosts } from "@/lib/notionAPI";
+import { getPostsTopPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 
 export const getStaticProps = async () => {
-    const allPosts = await getAllPosts();
+    const allPosts = await getPostsTopPage();
     return {
         props: {
             allPosts,
