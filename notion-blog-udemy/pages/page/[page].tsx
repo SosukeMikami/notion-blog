@@ -1,12 +1,18 @@
 import { Inter } from "next/font/google";
-import { getPostsByPage } from "@/lib/notionAPI";
+import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 
 export const getStaticPaths = async () => {
+    const numberOfPage = await getNumberOfPages();
+    let params = []
+    for(let i = 1; i < numberOfPage; i++) {
+        params.push({ params: { page: String(i) } });
+    }
+
     return {
-        paths: [{ params: { page: "1" } }, { params: { page: "2" } }, { params: { page: "3" } }],
+        paths: params,
         fallback: true,
     };
 };

@@ -86,3 +86,10 @@ export const getPostsByPage = async (page: number) => {
     const fourPosts = allPosts.splice(startIndex,4);
     return fourPosts;
 }
+
+export const getNumberOfPages = async () => {
+    const allPosts = await getAllPosts();
+    return (
+        Math.ceil(allPosts.length / 4 )
+    );
+}
