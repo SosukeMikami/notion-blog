@@ -5,4 +5,5 @@ export type postType = {
     date: string,
     slug: string,
     tags: string[],
+    isPagenationPage?: boolean
 }

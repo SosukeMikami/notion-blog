@@ -6,10 +6,7 @@ import { SinglePost } from "@/components/Blog/SinglePost";
 
 export const getStaticPaths = async () => {
     return {
-        paths: [
-            {params: {page: "1"}},
-            {params: {page: "2"}},
-        ],
+        paths: [{ params: { page: "1" } }, { params: { page: "2" } }],
         fallback: true,
     };
 };
@@ -35,19 +32,23 @@ export const BlogPageList = ({ allPosts }: { allPosts: postType[] }) => {
                 <h1 className="text-5xl font-medium text-center mb-16">
                     Notin Blog 🚀
                 </h1>
-                {allPosts.map((post, index) => (
-                    <SinglePost
-                    id={post.id}
-                    key={index}
-                    title={post.title}
-                    description={post.description}
-                    date={post.date}
-                    slug={post.slug}
-                    tags={post.tags}/>
-                ))}
+                <div className="flex flex-wrap justify-between">
+                    {allPosts.map((post, index) => (
+                        <SinglePost
+                            id={post.id}
+                            key={index}
+                            title={post.title}
+                            description={post.description}
+                            date={post.date}
+                            slug={post.slug}
+                            tags={post.tags}
+                            isPagenationPage={true}
+                        />
+                    ))}
+                </div>
             </main>
         </div>
     );
-}
+};
 
 export default BlogPageList;
