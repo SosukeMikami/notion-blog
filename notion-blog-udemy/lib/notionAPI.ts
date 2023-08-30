@@ -32,9 +32,9 @@ const getPageMetadata = (post: any) => {
     return {
         id: post.id,
         title: post.properties.Name.title[0].plain_text,
-        Description: post.properties.Description.rich_text[0].plain_text,
+        description: post.properties.Description.rich_text[0].plain_text,
         date: post.properties.Date.date.start,
-        Sulg: post.properties.Sulg.rich_text[0].plain_text,
-        Tags: getTags(post.properties.Tags.multi_select)
+        sulg: post.properties.Sulg.rich_text[0].plain_text,
+        sags: getTags(post.properties.Tags.multi_select)
     };
 };
