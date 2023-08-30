@@ -33,7 +33,28 @@ const getPageMetadata = (post: any): postType => {
         title: post.properties.Name.title[0].plain_text,
         description: post.properties.Description.rich_text[0].plain_text,
         date: post.properties.Date.date.start,
-        slug: post.properties.Sulg.rich_text[0].plain_text,
+        slug: post.properties.Slug.rich_text[0].plain_text,
         tags: getTags(post.properties.Tags.multi_select)
     };
 };
+
+export const getSinglePost = async (slug: any) => {
+    const respoces = await notion.databases.query({
+        database_id: String(process.env.NOTION_DATABASE_ID),
+        filter: {
+            property: "Slug",
+            formula: {
+                string: {
+                    equals: slug
+                }
+            }
+        }
+    });
+
+    const page = respoces.results[0];
+
+    const metadata = getPageMetadata(page);
+    console.log(metadata);
+
+    return metadata;
+}
