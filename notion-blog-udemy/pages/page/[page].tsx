@@ -3,7 +3,16 @@ import { getPostsTopPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
-import Link from "next/link";
+
+export const getStaticPaths = async () => {
+    return {
+        paths: [
+            {params: {page: "1"}},
+            {params: {page: "2"}},
+        ],
+        fallback: true,
+    };
+};
 
 export const getStaticProps = async () => {
     const allPosts = await getPostsTopPage();
@@ -17,7 +26,7 @@ export const getStaticProps = async () => {
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ allPosts }: { allPosts: postType[] }) {
+export const BlogPageList = ({ allPosts }: { allPosts: postType[] }) => {
     console.log(allPosts);
 
     return (
@@ -36,8 +45,9 @@ export default function Home({ allPosts }: { allPosts: postType[] }) {
                     slug={post.slug}
                     tags={post.tags}/>
                 ))}
-            <Link href="/page/1" className="mb-6 lg:w-1/2 mx-auto rounded-md px-5 text-right block">...もっと見る</Link>
             </main>
         </div>
     );
 }
+
+export default BlogPageList;
