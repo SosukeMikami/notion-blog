@@ -16,8 +16,6 @@ export const getAllPosts = async () => {
     });
 
     const allPosts = posts.results;
-
-    console.log(allPosts);
     
     return allPosts.map((post) => {
         return getPageMetadata(post);
@@ -58,11 +56,9 @@ export const getSinglePost = async (slug: any) => {
     const page = respoces.results[0];
 
     const metadata = getPageMetadata(page);
-    //console.log(metadata);
 
     const mbBlocks = await n2m.pageToMarkdown(page.id);
     const mdString = n2m.toMarkdownString(mbBlocks);
-    //console.log(mdString);
 
     return {
         metadata: metadata,
@@ -80,9 +76,7 @@ export const getPostsTopPage = async () => {
 //ページ番号に応じた記事を出力する
 export const getPostsByPage = async (page: number) => {
     const allPosts = await getAllPosts();
-    const startIndex = page * 4 - 1
-    console.log(startIndex);
-    
+    const startIndex = (page - 1) * 4
     const fourPosts = allPosts.splice(startIndex,4);
     return fourPosts;
 }
@@ -92,4 +86,16 @@ export const getNumberOfPages = async () => {
     return (
         Math.ceil(allPosts.length / 4 )
     );
+}
+
+export const getPostsByTagAndPage = async (tagName: string, page: number) => {
+    const allPosts = await getAllPosts();
+    const post = allPosts.filter((post) => 
+        post.tags.find((tag: string) => tag == tagName)
+    );
+    
+    const startIndex = (page - 1) * 4
+    const fourPosts = post.splice(startIndex, 4);
+
+    return fourPosts;
 }

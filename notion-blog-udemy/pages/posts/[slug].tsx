@@ -17,7 +17,6 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
     const post = await getSinglePost(params.slug);
-    console.log(post);
     return {
         props: {
             post,
@@ -27,7 +26,6 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const Post = ({ post }) => {
-    console.log(post);
 
     return (
         <section className="container lg:px-2 px-5 lg:w-25 mx-auto mt-20">

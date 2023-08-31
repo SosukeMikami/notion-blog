@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
+import { getNumberOfPages, getPostsByPage, getPostsByTagAndPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
@@ -7,35 +7,27 @@ import Pagenation from "@/components/Pagenation/Pagenation";
 
 export const getStaticPaths = async () => {
     const numberOfPage = await getNumberOfPages();
-    let params = []
-    for(let i = 1; i < numberOfPage; i++) {
-        params.push({ params: { page: String(i) } });
-    }
-
     return {
-        paths: params,
+        paths: [{ params: {tag: "TypeScript", page: "2"} }],
         fallback: true,
     };
 };
 
 export const getStaticProps = async (context) => {
     const currentPage = context.params?.page;
-    const postsByPage = await getPostsByPage(
-        parseInt(currentPage.toString(), 10)
-    )
+    const currentTag = context.params?.tag;
 
-    const numberOfPage = await getNumberOfPages();
+    const posts = await getPostsByTagAndPage(currentTag, Number(currentPage));
 
     return {
         props: {
-            postsByPage,
-            numberOfPage,
+            posts,
         },
         revalidate: 60,
     };
 };
 
-export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postType[], numberOfPage: number }) => {
+export const BlogTagPageList = ({ posts }: { posts: postType[]}) => {
 
     return (
         <div>
@@ -44,7 +36,7 @@ export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postT
                     Notion Blog 🚀
                 </h1>
                 <div className="flex flex-wrap justify-between">
-                    {postsByPage.map((post, index) => (
+                    {posts.map((post, index) => (
                         <SinglePost
                             id={post.id}
                             key={index}
@@ -57,10 +49,9 @@ export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postT
                         />
                     ))}
                 </div>
-                <Pagenation numberOfPage={numberOfPage}/>
             </main>
         </div>
     );
 };
 
-export default BlogPageList;
+export default BlogTagPageList;

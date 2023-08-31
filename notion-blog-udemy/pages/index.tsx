@@ -18,7 +18,6 @@ export const getStaticProps = async () => {
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ allPosts }: { allPosts: postType[] }) {
-    console.log(allPosts);
 
     return (
         <div>
