@@ -4,6 +4,7 @@ import { getPostsTopPage } from "@/lib/notionAPI";
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 import Link from "next/link";
+import Tag from "@/components/Tag/Tag";
 
 export const getStaticProps = async () => {
     const allPosts = await getPostsTopPage();
@@ -36,6 +37,7 @@ export default function Home({ allPosts }: { allPosts: postType[] }) {
                     tags={post.tags}/>
                 ))}
             <Link href="/page/1" className="mb-6 lg:w-1/2 mx-auto rounded-md px-5 text-right block">...もっと見る</Link>
+            <Tag />
             </main>
         </div>
     );
