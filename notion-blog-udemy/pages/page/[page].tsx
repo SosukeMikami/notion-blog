@@ -3,6 +3,7 @@ import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
+import Pagenation from "@/components/Pagenation/Pagenation";
 
 export const getStaticPaths = async () => {
     const numberOfPage = await getNumberOfPages();
@@ -24,17 +25,19 @@ export const getStaticProps = async (context) => {
     )
 
     console.log(postsByPage);
-    
+
+    const numberOfPage = await getNumberOfPages();
 
     return {
         props: {
             postsByPage,
+            numberOfPage,
         },
         revalidate: 60,
     };
 };
 
-export const BlogPageList = ({ postsByPage }: { postsByPage: postType[] }) => {
+export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postType[], numberOfPage: number }) => {
     console.log(postsByPage);
 
     return (
@@ -57,6 +60,7 @@ export const BlogPageList = ({ postsByPage }: { postsByPage: postType[] }) => {
                         />
                     ))}
                 </div>
+                <Pagenation numberOfPage={numberOfPage}/>
             </main>
         </div>
     );
