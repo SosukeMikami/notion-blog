@@ -42,12 +42,13 @@ export const getStaticProps = async (context) => {
         props: {
             numberOfPage,
             posts,
+            currentTag
         },
         revalidate: 60,
     };
 };
 
-export const BlogTagPageList = ({ posts, numberOfPage }: { posts: postType[], numberOfPage: number }) => {
+export const BlogTagPageList = ({ posts, numberOfPage, currentTag }: { posts: postType[], numberOfPage: number, currentTag: string }) => {
     return (
         <div>
             <main className="container w-full mt-16 mx-auto">
@@ -69,7 +70,7 @@ export const BlogTagPageList = ({ posts, numberOfPage }: { posts: postType[], nu
                     ))}
                 </div>
             </main>
-            <Pagenation numberOfPage={numberOfPage} />
+            <Pagenation numberOfPage={numberOfPage} tag={currentTag} />
         </div>
     );
 };

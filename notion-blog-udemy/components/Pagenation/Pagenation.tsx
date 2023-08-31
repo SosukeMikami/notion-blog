@@ -1,7 +1,9 @@
 import Link from "next/link";
 import React from "react";
 
-const Pagenation = ({ numberOfPage }: { numberOfPage: number }) => {
+import { getPageLink } from "@/lib/blog-helper";
+
+const Pagenation = ({ numberOfPage, tag }: { numberOfPage: number, tag?: string }) => {
     let pages: number[] = [];
     for (let i = 1; i <= numberOfPage; i++) {
         pages.push(i);
@@ -15,7 +17,7 @@ const Pagenation = ({ numberOfPage }: { numberOfPage: number }) => {
                     <li key={index}>
                         <Link
                             className="inline-block w-7 h-7 leading-7 font-medium text-center rounded-full text-white bg-sky-900"
-                            href={`/page/${page}`}
+                            href={getPageLink(page, tag)}
                         >
                             {page}
                         </Link>
