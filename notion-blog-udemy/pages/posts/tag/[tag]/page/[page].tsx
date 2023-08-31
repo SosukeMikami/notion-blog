@@ -23,10 +23,7 @@ export const getStaticPaths = async () => {
             });
         })
     )
-
-    console.log(params);
     
-
     return {
         paths: params,
         fallback: true,
@@ -36,19 +33,21 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
     const currentPage = context.params?.page;
     const currentTag = context.params?.tag;
-    
 
     const posts = await getPostsByTagAndPage(currentTag, Number(currentPage));
 
+    const numberOfPage = await getNumberOfPagesByTag(currentTag);
+
     return {
         props: {
+            numberOfPage,
             posts,
         },
         revalidate: 60,
     };
 };
 
-export const BlogTagPageList = ({ posts }: { posts: postType[] }) => {
+export const BlogTagPageList = ({ posts, numberOfPage }: { posts: postType[], numberOfPage: number }) => {
     return (
         <div>
             <main className="container w-full mt-16 mx-auto">
@@ -70,6 +69,7 @@ export const BlogTagPageList = ({ posts }: { posts: postType[] }) => {
                     ))}
                 </div>
             </main>
+            <Pagenation numberOfPage={numberOfPage} />
         </div>
     );
 };
