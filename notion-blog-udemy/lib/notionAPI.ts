@@ -88,6 +88,7 @@ export const getNumberOfPages = async () => {
     );
 }
 
+//タグごとのアーカイブページ
 export const getPostsByTagAndPage = async (tagName: string, page: number) => {
     const allPosts = await getAllPosts();
     const post = allPosts.filter((post) => 
@@ -98,4 +99,23 @@ export const getPostsByTagAndPage = async (tagName: string, page: number) => {
     const fourPosts = post.splice(startIndex, 4);
 
     return fourPosts;
+}
+
+export const getNumberOfPagesByTag = async (tagName: string) => {
+    const allPosts = await getAllPosts();
+    const post = allPosts.filter((post) => 
+        post.tags.find((tag: string) => tag == tagName)
+    );
+    
+    return (
+        Math.ceil(post.length / 4 )
+    );
+}
+
+export const getAllTags = async () => {
+    const allPosts = await getAllPosts();
+    const allTagDuplicaionLists = allPosts.flatMap((post) => post.tags);
+    const set = new Set(allTagDuplicaionLists);
+    const allTagList = Array.from(set);
+    return allTagList;
 }

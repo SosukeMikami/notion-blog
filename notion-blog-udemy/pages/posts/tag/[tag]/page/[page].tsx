@@ -1,14 +1,34 @@
 import { Inter } from "next/font/google";
-import { getNumberOfPages, getPostsByPage, getPostsByTagAndPage } from "@/lib/notionAPI";
+import {
+    getAllTags,
+    getNumberOfPagesByTag,
+    getPostsByTagAndPage,
+} from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 import Pagenation from "@/components/Pagenation/Pagenation";
 
 export const getStaticPaths = async () => {
-    const numberOfPage = await getNumberOfPages();
+    const allTags = await getAllTags();
+
+    let params = [];
+
+    await Promise.all(
+        allTags.map((tag) => {
+            return getNumberOfPagesByTag(tag).then((numberOfPage: number) => {
+                for (let i = 1; i <= numberOfPage; i++) {
+                    params.push({ params: { tag: tag, page: String(i) } });
+                }
+            });
+        })
+    )
+
+    console.log(params);
+    
+
     return {
-        paths: [{ params: {tag: "TypeScript", page: "2"} }],
+        paths: params,
         fallback: true,
     };
 };
@@ -16,6 +36,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
     const currentPage = context.params?.page;
     const currentTag = context.params?.tag;
+    
 
     const posts = await getPostsByTagAndPage(currentTag, Number(currentPage));
 
@@ -27,8 +48,7 @@ export const getStaticProps = async (context) => {
     };
 };
 
-export const BlogTagPageList = ({ posts }: { posts: postType[]}) => {
-
+export const BlogTagPageList = ({ posts }: { posts: postType[] }) => {
     return (
         <div>
             <main className="container w-full mt-16 mx-auto">
