@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
-import { getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
+import { getAllTags, getNumberOfPages, getPostsByPage } from "@/lib/notionAPI";
 
 import { postType } from "@/pages/types";
 import { SinglePost } from "@/components/Blog/SinglePost";
 import Pagenation from "@/components/Pagenation/Pagenation";
+import Tag from "@/components/Tag/Tag";
 
 export const getStaticPaths = async () => {
     const numberOfPage = await getNumberOfPages();
@@ -25,17 +26,19 @@ export const getStaticProps = async (context) => {
     )
 
     const numberOfPage = await getNumberOfPages();
+    const tags = await getAllTags();
 
     return {
         props: {
             postsByPage,
             numberOfPage,
+            tags,
         },
         revalidate: 60,
     };
 };
 
-export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postType[], numberOfPage: number }) => {
+export const BlogPageList = ({ postsByPage, numberOfPage, tags }: { postsByPage: postType[], numberOfPage: number, tags: string[] }) => {
 
     return (
         <div>
@@ -58,6 +61,8 @@ export const BlogPageList = ({ postsByPage, numberOfPage }: { postsByPage: postT
                     ))}
                 </div>
                 <Pagenation numberOfPage={numberOfPage}/>
+                <br />
+                <Tag tags={tags} />
             </main>
         </div>
     );

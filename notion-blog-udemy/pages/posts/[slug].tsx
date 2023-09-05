@@ -1,3 +1,4 @@
+import { getPageLink } from "@/lib/blog-helper";
 import { getAllPosts, getSinglePost } from "@/lib/notionAPI";
 import Link from "next/link";
 import React from "react";
@@ -36,12 +37,13 @@ export const Post = ({ post }) => {
             <span className="text-gray-500">{post.metadata.date}</span>
             <br />
             {post.metadata.tags.map((tag, index) => (
-                <p
+                <Link
                     key={index}
+                    href={getPageLink(1, tag)}
                     className="text-white bg-gray-500 rounded-xl px-2 pb-1 mr-2 font-medium inline-block"
                 >
                     {tag}
-                </p>
+                </Link>
             ))}
 
             <div className="mt-10 font-medium">
